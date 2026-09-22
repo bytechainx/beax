@@ -3,6 +3,12 @@
 本文件记录 `beax` 的可见变更。格式对齐 Keep a Changelog，
 版本号遵循 `docs/versioning.md`；本仓库是库 crate，`Cargo.lock` 不入库。
 
+## [0.1.1] - 2026-09-23
+
+### 修正
+
+- 修正授权元数据与日期有效区间校验，恢复 fail-closed 契约
+
 ## [0.1.0] - 2026-09-22
 
 ### 新增

@@ -710,7 +710,7 @@ fn authz_fail_closed_paths() {
     ));
 
     let mut evidence = documented_bea_evidence();
-    evidence.valid_until = Date::new(2026, 8, 16).ok();
+    evidence.valid_until = Date::new(2026, 8, 18).ok();
     match authorize_bea(Some(&evidence), BeaAccessMode::Offline, as_of) {
         BeaAuthorization::Denied { reason } => assert_eq!(reason, "证据已过期"),
         other => panic!("应拒绝过期证据，实得 {other:?}"),

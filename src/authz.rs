@@ -103,7 +103,8 @@ pub fn documented_bea_evidence() -> BeaAuthorizationEvidence {
 /// 5. 证据未过期（`valid_until` 已声明时，`as_of` MUST NOT 晚于它）
 /// 6. 请求模式 ∈ 覆盖模式集合（**live 不在其中**）
 ///
-/// `as_of` 由调用方传入，本层不读取系统时间。
+/// `as_of` 由调用方传入，本层不读取系统时间。判定先校验日期与有效区间，
+/// 拒绝早于签署日的评估日期，以及纯空白编号、签署者和范围说明。
 #[must_use]
 pub fn authorize_bea(
     evidence: Option<&BeaAuthorizationEvidence>,
@@ -115,14 +116,32 @@ pub fn authorize_bea(
             reason: "缺少 Owner 签核证据".to_owned(),
         };
     };
-    if evidence.decision_id.is_empty() {
+    if evidence.decision_id.trim().is_empty() {
         return BeaAuthorization::Denied {
             reason: "签核编号不明".to_owned(),
         };
     }
-    if evidence.signed_by.is_empty() {
+    if evidence.signed_by.trim().is_empty() {
         return BeaAuthorization::Denied {
             reason: "签署者不明".to_owned(),
+        };
+    }
+    if evidence.scope_note.trim().is_empty() {
+        return BeaAuthorization::Denied {
+            reason: "证据范围说明不明".into(),
+        };
+    }
+    if validate_date(&as_of).is_err() || validate_authorization_evidence(evidence).is_err() {
+        return BeaAuthorization::Denied {
+            reason: "评估日期或证据有效区间非法".into(),
+        };
+    }
+    if evidence
+        .signed_at
+        .is_some_and(|signed_at| as_of < signed_at)
+    {
+        return BeaAuthorization::Denied {
+            reason: "证据尚未签署生效".into(),
         };
     }
     if evidence.authorized_modes.is_empty() {
@@ -178,17 +197,25 @@ pub fn mode_label(mode: BeaAccessMode) -> &'static str {
     }
 }
 
-/// 校验一份证据描述自身的形态（日期分量合法）。
+/// 校验一份证据描述自身的形态（日期合法且有效区间未倒置）。
 ///
 /// # Errors
 ///
-/// `signed_at` / `valid_until` 的日期分量非法时返回 [`crate::BeaError::Invalid`]。
+/// `signed_at` / `valid_until` 的日期分量非法或签署日晚于到期日时返回 [`crate::BeaError::Invalid`]。
 pub fn validate_authorization_evidence(evidence: &BeaAuthorizationEvidence) -> BeaResult<()> {
     if let Some(signed_at) = evidence.signed_at {
         validate_date(&signed_at)?;
     }
     if let Some(valid_until) = evidence.valid_until {
         validate_date(&valid_until)?;
+        if evidence
+            .signed_at
+            .is_some_and(|signed_at| signed_at > valid_until)
+        {
+            return Err(crate::BeaError::Invalid(
+                "签署日期不得晚于有效期上界".into(),
+            ));
+        }
     }
     Ok(())
 }
@@ -265,7 +292,7 @@ mod tests {
     #[test]
     fn expired_evidence_is_denied() {
         let mut evidence = documented_bea_evidence();
-        evidence.valid_until = Date::new(2026, 8, 16).ok();
+        evidence.valid_until = Date::new(2026, 8, 18).ok();
         match authorize_bea(Some(&evidence), BeaAccessMode::Offline, as_of()) {
             BeaAuthorization::Denied { reason } => assert_eq!(reason, "证据已过期"),
             other => panic!("应拒绝，实得 {other:?}"),
@@ -288,5 +315,89 @@ mod tests {
         assert_eq!(mode_label(BeaAccessMode::Offline), "offline");
         assert_eq!(mode_label(BeaAccessMode::ReferenceOnly), "reference_only");
         assert_eq!(mode_label(BeaAccessMode::Live), "live");
+    }
+
+    #[test]
+    fn authorization_rejects_blank_metadata_and_invalid_dates() {
+        let valid = Date::new(2026, 9, 23).unwrap();
+        for blank in ["", "   ", "\u{3000}"] {
+            for field in 0..3 {
+                let mut e = documented_bea_evidence();
+                match field {
+                    0 => e.decision_id = blank.into(),
+                    1 => e.signed_by = blank.into(),
+                    _ => e.scope_note = blank.into(),
+                }
+                assert!(matches!(
+                    authorize_bea(Some(&e), BeaAccessMode::Offline, valid),
+                    BeaAuthorization::Denied { .. }
+                ));
+            }
+        }
+    }
+
+    #[test]
+    fn authorization_rechecks_dates_and_validity_interval() {
+        let valid = Date::new(2026, 9, 23).unwrap();
+        let bad = Date {
+            year: 2026,
+            month: 99,
+            day: 99,
+        };
+        let e = documented_bea_evidence();
+        assert!(matches!(
+            authorize_bea(Some(&e), BeaAccessMode::Offline, bad),
+            BeaAuthorization::Denied { .. }
+        ));
+        for field in 0..2 {
+            let mut e = documented_bea_evidence();
+            if field == 0 {
+                e.signed_at = Some(bad);
+            } else {
+                e.valid_until = Some(bad);
+            }
+            assert!(validate_authorization_evidence(&e).is_err());
+            assert!(matches!(
+                authorize_bea(Some(&e), BeaAccessMode::Offline, valid),
+                BeaAuthorization::Denied { .. }
+            ));
+        }
+        let mut e = documented_bea_evidence();
+        e.signed_at = Some(valid);
+        e.valid_until = Some(Date::new(2026, 9, 22).unwrap());
+        assert!(validate_authorization_evidence(&e).is_err());
+        e.valid_until = None;
+        assert!(matches!(
+            authorize_bea(
+                Some(&e),
+                BeaAccessMode::Offline,
+                Date::new(2026, 9, 22).unwrap()
+            ),
+            BeaAuthorization::Denied { .. }
+        ));
+        assert!(matches!(
+            authorize_bea(Some(&e), BeaAccessMode::Offline, valid),
+            BeaAuthorization::Authorized { .. }
+        ));
+    }
+
+    #[test]
+    fn authorization_accepts_inclusive_validity_bounds() {
+        let mut e = documented_bea_evidence();
+        let date = Date::new(2026, 9, 23).unwrap();
+        e.signed_at = Some(date);
+        e.valid_until = Some(date);
+        assert!(matches!(
+            authorize_bea(Some(&e), BeaAccessMode::Offline, date),
+            BeaAuthorization::Authorized { .. }
+        ));
+        assert!(matches!(
+            authorize_bea(
+                Some(&e),
+                BeaAccessMode::Offline,
+                Date::new(2026, 9, 24).unwrap()
+            ),
+            BeaAuthorization::Denied { .. }
+        ));
     }
 }

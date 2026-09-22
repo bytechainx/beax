@@ -1,0 +1,24 @@
+{
+  "_synthetic": true,
+  "_note": "本文件为特性 005 自拟的合成样本，不是真实源数据，不构成任何证据。用于验证「缺失以具名原因表达、不得静默折算为 0」：`.` 与 null 两种形态都必须映射为具名缺失。",
+  "records": [
+    {
+      "dataset_id": "NIPA",
+      "table_id": "T10102",
+      "line_number": 5,
+      "date": "2026-06-30",
+      "value": ".",
+      "unit": "Index",
+      "frequency": "monthly"
+    },
+    {
+      "dataset_id": "NIPA",
+      "table_id": "T10103",
+      "line_number": 6,
+      "date": "2026-06-30",
+      "value": null,
+      "unit": "Index",
+      "frequency": "monthly"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "_synthetic": true,
+  "_note": "本文件为特性 005 自拟的合成样本，不是真实源数据，不构成任何证据。字段名与结构对齐 specs/adapter/bea.md 声明的事实；清单未逐表声明源单位，故 unit 取值为合成占位串；清单亦未登记非 NIPA 数据集的明细表号（自述「明细为历史材料，未入库」），故该类表号一律用 SYN- 前缀的占位串，不得当作真实表号。",
+  "records": [
+    {
+      "dataset_id": "NIPA",
+      "table_id": "T10101",
+      "line_number": 1,
+      "date": "2026-06-30",
+      "value": 30000.0,
+      "unit": "Billions of dollars",
+      "frequency": "quarterly"
+    },
+    {
+      "dataset_id": "NIPA",
+      "table_id": "T10101",
+      "line_number": 2,
+      "date": "2026-03-31",
+      "value": 29850.0,
+      "unit": "Billions of dollars",
+      "frequency": "quarterly"
+    },
+    {
+      "dataset_id": "NIPA",
+      "table_id": "T20100",
+      "line_number": 12,
+      "date": "2026-06-30",
+      "value": 19000.0,
+      "unit": "Billions of dollars",
+      "frequency": "monthly",
+      "vintage": "2026-07-31"
+    },
+    {
+      "dataset_id": "NIPA",
+      "table_id": "T20301",
+      "line_number": 4,
+      "date": "2026-06-30",
+      "value": 5.4,
+      "unit": "Percent",
+      "frequency": "monthly"
+    },
+    {
+      "dataset_id": "NIUnderlyingDetail",
+      "table_id": "SYN-NIUD-1",
+      "line_number": 7,
+      "date": "2026-06-30",
+      "value": 1.0,
+      "unit": "Index",
+      "frequency": "monthly"
+    },
+    {
+      "dataset_id": "Regional",
+      "table_id": "SYN-REGIONAL-1",
+      "line_number": 1,
+      "date": "2026-06-30",
+      "value": 63000.0,
+      "unit": "Thousands of dollars",
+      "frequency": "annual"
+    },
+    {
+      "dataset_id": "FixedAssets",
+      "table_id": "SYN-FA-1",
+      "line_number": 3,
+      "date": "2026-06-30",
+      "value": 4200.0,
+      "unit": "Billions of dollars",
+      "frequency": "annual"
+    }
+  ]
+}

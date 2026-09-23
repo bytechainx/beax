@@ -3,6 +3,19 @@
 本文件记录 `beax` 的可见变更。格式对齐 Keep a Changelog，
 版本号遵循 `docs/versioning.md`；本仓库是库 crate，`Cargo.lock` 不入库。
 
+## [Unreleased]
+
+### 新增
+
+- 新增 E2E target `tests/e2e_bea.rs`：把本仓**核对器口径内的全部公开条目**逐条真实执行 ——
+  权威公开面派生自 `cargo +nightly public-api --simplified`，核对器（带 `llvm-cov`）退出码 **0**，
+  权威 **163** / 声明 **163** / `公开 fn 执行 39/39`（分项 `type` 18 / `variant` 46 / `field` 22 /
+  `const` 38 / `fn` 39）；单一 `#[test] e2e_bea_all_public_api`（8 个 phase），`[dev-dependencies]`
+  仍为空、无网络 / 无凭据 / 无文件副作用（解析阶段读仓内真实合成夹具）。
+  **纯测试新增，不改公开 API、不升版本**；口径边界（7 个两级嵌套字段未登记 ⇒ 三层判据不保护、
+  derive/auto impl 不计入、`BeaUnit(_)` 字段私有故无 `_0` 条目等）与核对命令见
+  `AGENTS.md`「E2E 全公开面覆盖核对」。
+
 ## [0.1.1] - 2026-09-23
 
 ### 修正

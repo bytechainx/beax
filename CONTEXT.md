@@ -13,7 +13,7 @@ _Avoid_: 采集器 / 抓取器（本库不含任何网络能力）
 _Avoid_: API 客户端（本库不接受 URL、认证信息或任何网络参数）
 
 **守卫**：跨源约束在本库内**自己那一侧**的落点（曲线路由、核心 PCE 主责、禁静默替换）。
-跨源整体语义归 `specs/005-macro-data-source-crates/contracts/cross-source-routing.md`。
+跨源整体语义归 `specs/features/005-macro-data-source-crates/contracts/cross-source-routing.md`。
 _Avoid_: 权威裁定者（本库 MUST NOT 重新裁定任何未决项）
 
 **共享形状**：错误面、值对象与 publication 三元组在各数据源库中**各自实现一遍**，

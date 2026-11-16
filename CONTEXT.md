@@ -85,16 +85,16 @@ _Avoid_: live 授权（清单未授予，本库 MUST NOT 据此放行）
 
 | 依赖 | 版本 | `rust_version` |
 | --- | --- | --- |
-| `thiserror` | 2.0.20 | 1.71 |
+| `thiserror` | 2.0.21 | 1.77 |
 | `serde` | 1.0.229 | 1.56 |
-| `serde_json` | 1.0.151 | 1.71 |
+| `serde_json` | 1.0.154 | 1.71 |
 
 传递依赖：`itoa` 1.0.18（1.68）、`memchr` 2.8.3（1.61）、`proc-macro2` 1.0.107（1.71）、
 `quote` 1.0.47（1.71）、`serde_core` 1.0.229（1.56）、`serde_derive` 1.0.229（1.71）、
-`syn` 3.0.6（1.71）、`thiserror-impl` 2.0.20（1.71）、`unicode-ident` 1.0.26（1.71）、
+`syn` 3.0.6（1.71）、`thiserror-impl` 2.0.21（1.77）、`unicode-ident` 1.0.26（1.71）、
 `zmij` 1.0.23（1.71）。
 
-最大值 = **1.71**，故 `rust-version = "1.71"`（2026-09-22 由 `cargo metadata` 实读推导）。
+最大值 = **1.77**（`thiserror` / `thiserror-impl` 2.0.21 声明 `rust_version` 1.77），故 `rust-version = "1.77"`（2026-11-16 复核；上表为推导快照，`thiserror` 行已更新）。
 所用语言特性（`let … else`、内联格式参数、`const fn` 常量求值）下界均不高于 1.71。
 
 ## 已知缺口

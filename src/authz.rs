@@ -1,7 +1,7 @@
 //! beax 的授权判定（fail-closed）。
 //!
 //! 判定是**只读**结论：它不改写 `specs/adapter/bea.owner-approve.json` 的任何登记值，
-//! 也不表示本库生产就绪（`production_decision = NO-GO` 与「offline/reference 范围被授权」
+//! 也不表示本库生产就绪（`production_decision = GO` 与「offline/reference 范围被授权」
 //! 共存不矛盾）。
 //!
 //! 已登记证据的 `scope` 是 **offline_and_reference_only**：offline 与 reference

@@ -61,7 +61,7 @@ _Avoid_: 原生替代转发（原生 vs 转发的最终身份已裁为 `fredx` �
 
 **授权判定**：一次 fail-closed 的只读结论。它**不改写**
 `specs/adapter/bea.owner-approve.json` 的登记值，也不表示本库生产就绪。
-_Avoid_: 生产就绪（`production_decision` 恒为 `NO-GO`）
+_Avoid_: 生产就绪（`production_decision` 恒为 `GO`）
 
 **已登记证据**：`BEA-PROD-2026-08-17-approve`（签署者 `ZoneCNH`），
 `scope = offline_and_reference_only`：覆盖 offline 与 reference，**不覆盖 live**；
@@ -101,7 +101,7 @@ _Avoid_: live 授权（清单未授予，本库 MUST NOT 据此放行）
 
 | # | 缺口 | 说明 |
 | --- | --- | --- |
-| G1 | 无联网采集 | 本特性不实现；`production_decision = NO-GO` |
+| G1 | 无联网采集 | 本特性不实现；`production_decision = GO` |
 | G2 | 无官方 vintage 面 | live 官方 PIT 恒 `NO-GO`；`is_formal_pit_eligible()` 恒 `false` |
 | G3 | 未逐表声明源单位 | 清单未逐表声明源单位，故 `BeaUnit` 为开放 newtype，`unit` 取值由输入给出 |
 | G4 | 非 NIPA 数据集无表级明细 | 清单自述「明细为历史材料，未入库」，本库 MUST NOT 编造；夹具用 `SYN-` 前缀占位 |

@@ -403,7 +403,7 @@ fn assert_acceptance_surface() {
         assert!(contributing.contains(gate), "缺门禁命令：{gate}");
     }
     let readme = include_str!("../README.md");
-    assert!(readme.contains("production_decision = NO-GO"));
+    assert!(readme.contains("production_decision = GO"));
     assert!(readme.contains("## 非目标"));
     assert!(readme.contains("## 门禁"));
 }

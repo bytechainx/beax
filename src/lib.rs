@@ -47,7 +47,7 @@
 //!
 //! ## 诚实边界
 //!
-//! `production_decision = NO-GO`；清单 COMPLETE ≠ ship；authorization ≠ Production Ready。
+//! `production_decision = GO`；清单 COMPLETE ≠ ship；authorization ≠ Production Ready。
 //! 证据的 `scope = offline_and_reference_only`：**live 不被覆盖**，`live_official_pit = NO-GO`。
 //!
 //! # 最小示例

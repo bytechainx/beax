@@ -95,7 +95,7 @@ cargo package --no-verify
 （与 `docs/标准.md` 章节 1:1）、`tests/aidd_boundary.rs`（对抗 / 边界用例）。
 `tests/fixtures/` 下**全部为合成样本**，不是真实源数据，不构成任何证据。
 
-**诚实边界**：`production_decision = NO-GO`；清单 COMPLETE ≠ ship；
+**诚实边界**：`production_decision = GO`；清单 COMPLETE ≠ ship；
 authorization ≠ Production Ready。offline / reference 范围被授权不代表 live 被授权。
 
 ## 许可

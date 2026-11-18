@@ -5,7 +5,7 @@
 ## 项目定位
 
 BEA 源事实库：Dataset 与 NIPA 表号常量、跨源守卫、离线解析与 fail-closed 授权判定。
-**不是联网采集器**；`production_decision = NO-GO`；live 官方 PIT 恒 `NO-GO`。
+**不是联网采集器**；`production_decision = GO`；live 官方 PIT 恒 `NO-GO`。
 
 ## 技术栈
 

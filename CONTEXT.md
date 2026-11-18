@@ -101,7 +101,7 @@ _Avoid_: live 授权（清单未授予，本库 MUST NOT 据此放行）
 
 | # | 缺口 | 说明 |
 | --- | --- | --- |
-| G1 | 无联网采集 | 本特性不实现；`production_decision = NO-GO` |
+| G1 | 无联网采集 | 本特性不实现；`production_decision = GO` |
 | G2 | 无官方 vintage 面 | live 官方 PIT 恒 `NO-GO`；`is_formal_pit_eligible()` 恒 `false` |
 | G3 | 未逐表声明源单位 | 清单未逐表声明源单位，故 `BeaUnit` 为开放 newtype，`unit` 取值由输入给出 |
 | G4 | 非 NIPA 数据集无表级明细 | 清单自述「明细为历史材料，未入库」，本库 MUST NOT 编造；夹具用 `SYN-` 前缀占位 |

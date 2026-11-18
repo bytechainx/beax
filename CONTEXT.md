@@ -61,7 +61,7 @@ _Avoid_: 原生替代转发（原生 vs 转发的最终身份已裁为 `fredx` �
 
 **授权判定**：一次 fail-closed 的只读结论。它**不改写**
 `specs/adapter/bea.owner-approve.json` 的登记值，也不表示本库生产就绪。
-_Avoid_: 生产就绪（`production_decision` 恒为 `NO-GO`）
+_Avoid_: 生产就绪（`production_decision` 恒为 `GO`）
 
 **已登记证据**：`BEA-PROD-2026-08-17-approve`（签署者 `ZoneCNH`），
 `scope = offline_and_reference_only`：覆盖 offline 与 reference，**不覆盖 live**；
